@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  *
  * <p>Provides API endpoints for CRUD operations on professors.
  */
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/professors")
 @RequiredArgsConstructor

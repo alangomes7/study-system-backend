@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * <p>Provides API endpoints for creating, retrieving, deleting, and managing professor assignments
  * for study classes. All endpoints are mapped under the "/study-classes" base path.
  */
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/study-classes")
 @RequiredArgsConstructor
@@ -30,23 +30,39 @@ public class StudyClassController {
   public record AssignProfessorRequest(Long professorId) {}
 
   /**
-   * Handles HTTP GET requests to retrieve all study classes, optionally filtered by a professor's
-   * ID.
+   * Handles HTTP GET requests to retrieve all study classes.
    *
-   * @param professorId Optional ID of the professor to filter classes by.
+   * @return A {@link ResponseEntity} containing a list of all {@link StudyClassDto} objects and an
+   *     OK status.
+   */
+  @GetMapping
+  public ResponseEntity<List<StudyClassDto>> getAllStudyClasses() {
+    return ResponseEntity.ok(studyClassService.getAllStudyClasses());
+  }
+
+  /**
+   * Handles HTTP GET requests to retrieve all study classes for a specific course.
+   *
+   * @param courseId The ID of the course to filter classes by.
    * @return A {@link ResponseEntity} containing a list of {@link StudyClassDto} objects and an OK
    *     status.
    */
-  @GetMapping
-  public ResponseEntity<List<StudyClassDto>> findStudyClasses(
-      @RequestParam(required = false) Long professorId) {
-    List<StudyClassDto> classes;
-    if (professorId != null) {
-      classes = studyClassService.getClassesByProfessor(professorId);
-    } else {
-      classes = studyClassService.getAllStudyClasses();
-    }
-    return ResponseEntity.ok(classes);
+  @GetMapping("/course/{courseId}")
+  public ResponseEntity<List<StudyClassDto>> findStudyClassesByCourse(@PathVariable Long courseId) {
+    return ResponseEntity.ok(studyClassService.getClassesByCourse(courseId));
+  }
+
+  /**
+   * Handles HTTP GET requests to retrieve all study classes taught by a specific professor.
+   *
+   * @param professorId The ID of the professor to filter classes by.
+   * @return A {@link ResponseEntity} containing a list of {@link StudyClassDto} objects and an OK
+   *     status.
+   */
+  @GetMapping("/professor/{professorId}")
+  public ResponseEntity<List<StudyClassDto>> findStudyClassesByProfessor(
+      @PathVariable Long professorId) {
+    return ResponseEntity.ok(studyClassService.getClassesByProfessor(professorId));
   }
 
   /**

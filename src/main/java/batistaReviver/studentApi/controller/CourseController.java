@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  * <p>Provides API endpoints for performing CRUD operations on courses. All endpoints are mapped
  * under the "/courses" base path.
  */
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/courses")
 @RequiredArgsConstructor

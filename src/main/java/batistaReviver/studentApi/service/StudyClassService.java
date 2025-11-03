@@ -135,6 +135,21 @@ public class StudyClassService {
   }
 
   /**
+   * Retrieves all study classes for a specific course.
+   *
+   * @param courseId The ID of the course.
+   * @return A list of {@link StudyClassDto}s.
+   * @throws EntityNotFoundException if no course is found with the given ID.
+   */
+  @Transactional(readOnly = true)
+  public List<StudyClassDto> getClassesByCourse(Long courseId) {
+    if (!courseRepository.existsById(courseId)) {
+      throw new EntityNotFoundException("Course with id = " + courseId + " not found.");
+    }
+    return studyClassRepository.findByCourseId(courseId).stream().map(StudyClassDto::new).toList();
+  }
+
+  /**
    * Assigns a professor to a study class that does not currently have one.
    *
    * @param classId The ID of the study class.

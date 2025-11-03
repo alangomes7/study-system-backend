@@ -24,6 +24,14 @@ public interface StudyClassRepository extends JpaRepository<StudyClass, Long> {
   List<StudyClass> findByProfessorId(Long professorId);
 
   /**
+   * Finds all study classes for a specific course.
+   *
+   * @param courseId The ID of the course.
+   * @return A list of {@link StudyClass} entities for the course.
+   */
+  List<StudyClass> findByCourseId(Long courseId);
+
+  /**
    * Checks if any study class is associated with a specific professor.
    *
    * @param professorId The ID of the professor.

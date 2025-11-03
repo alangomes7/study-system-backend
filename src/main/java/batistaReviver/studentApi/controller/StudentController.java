@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * REST controller for managing {@link Student} entities. Provides endpoints for CRUD operations on
  * students.
  */
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/students")
 @RequiredArgsConstructor
