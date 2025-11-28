@@ -2,6 +2,7 @@ package batistaReviver.studentApi.controller;
 
 import batistaReviver.studentApi.model.Student;
 import batistaReviver.studentApi.service.StudentService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -44,13 +45,13 @@ public class StudentController {
   }
 
   /**
-   * Adds a new student.
+   * Create a new student.
    *
    * @param student The student object to be added.
    * @return A {@link ResponseEntity} containing the created student and HTTP status 201 (Created).
    */
   @PostMapping
-  public ResponseEntity<Student> addStudent(@RequestBody Student student) {
+  public ResponseEntity<Student> createStudent(@Valid @RequestBody Student student) {
     return new ResponseEntity<>(studentService.addStudent(student), HttpStatus.CREATED);
   }
 
@@ -64,8 +65,8 @@ public class StudentController {
    *     found.
    */
   @PutMapping("/{id}")
-  public ResponseEntity<Student> modifyStudent(
-      @PathVariable Long id, @RequestBody Student studentDetails) {
+  public ResponseEntity<Student> updateStudent(
+      @PathVariable Long id, @Valid @RequestBody Student studentDetails) {
     return ResponseEntity.ok(studentService.modifyStudent(id, studentDetails));
   }
 

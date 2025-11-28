@@ -3,6 +3,7 @@ package batistaReviver.studentApi.controller;
 import batistaReviver.studentApi.dto.SubscriptionDto;
 import batistaReviver.studentApi.model.Subscription;
 import batistaReviver.studentApi.service.SubscriptionService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -63,7 +64,7 @@ public class SubscriptionController {
    */
   @PostMapping
   public ResponseEntity<SubscriptionDto> createSubscription(
-      @RequestBody CreateSubscriptionRequest request) {
+      @Valid @RequestBody CreateSubscriptionRequest request) {
     SubscriptionDto createdSubscription =
         subscriptionService.createSubscription(request.studentId(), request.studyClassId());
     return new ResponseEntity<>(createdSubscription, HttpStatus.CREATED);

@@ -1,6 +1,10 @@
 package batistaReviver.studentApi.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,16 +30,20 @@ public class StudyClass {
   private Long id;
 
   /** A unique, auto-generated code for the class (e.g., "CS101-20241"). */
+  @NotBlank(message = "Class code is required")
   @Column(name = "class_code", unique = true, nullable = false)
   private String classCode;
 
   /** The academic year in which the class is offered. */
+  @Min(value = 2025, message = "Year must be valid")
   @Column(nullable = false)
   private int year;
 
   /**
    * The semester in which the class is offered (e.g., 1 for the first semester, 2 for the second).
    */
+  @Min(value = 1, message = "Semester must be 1 or 2")
+  @Max(value = 2, message = "Semester must be 1 or 2")
   @Column(nullable = false)
   private int semester;
 
@@ -43,6 +51,7 @@ public class StudyClass {
    * The course that this class is an offering of. Establishes a many-to-one relationship with the
    * Course entity.
    */
+  @NotNull(message = "Course is required")
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "course_id", nullable = false)
   private Course course;

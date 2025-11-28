@@ -2,6 +2,7 @@ package batistaReviver.studentApi.controller;
 
 import batistaReviver.studentApi.model.Professor;
 import batistaReviver.studentApi.service.ProfessorService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class ProfessorController {
    *     status.
    */
   @PostMapping
-  public ResponseEntity<Professor> createProfessor(@RequestBody Professor professor) {
+  public ResponseEntity<Professor> createProfessor(@Valid @RequestBody Professor professor) {
     Professor createdProfessor = professorService.createProfessor(professor);
     return new ResponseEntity<>(createdProfessor, HttpStatus.CREATED);
   }
@@ -65,7 +66,7 @@ public class ProfessorController {
    */
   @PutMapping("/{id}")
   public ResponseEntity<Professor> updateProfessor(
-      @PathVariable Long id, @RequestBody Professor professorDetails) {
+      @PathVariable Long id, @Valid @RequestBody Professor professorDetails) {
     return ResponseEntity.ok(professorService.updateProfessor(id, professorDetails));
   }
 

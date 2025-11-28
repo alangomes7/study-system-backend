@@ -1,6 +1,8 @@
 package batistaReviver.studentApi.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,6 +31,8 @@ public class Course {
    * The name of the course (e.g., "Introduction to Computer Science"). This field cannot be null
    * and must be unique.
    */
+  @NotBlank(message = "Course name is required")
+  @Size(max = 100, message = "Course name must be less than 100 characters")
   @Column(nullable = false, unique = true)
   private String name;
 

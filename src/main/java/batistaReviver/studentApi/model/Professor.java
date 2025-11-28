@@ -1,6 +1,9 @@
 package batistaReviver.studentApi.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,6 +35,7 @@ public class Professor {
   private Long id;
 
   /** The full name of the professor. This field is mandatory and cannot be null. */
+  @NotBlank(message = "Name is required")
   @Column(nullable = false)
   private String name;
 
@@ -39,10 +43,14 @@ public class Professor {
    * The phone number of the professor. This field is mandatory and must be unique across all
    * professor records.
    */
+  @NotBlank(message = "Phone is required")
+  @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Phone number is invalid")
   @Column(nullable = false, unique = true)
   private String phone;
 
   /** The email address of the professor. This field is mandatory and must be unique. */
+  @NotBlank(message = "Email is required")
+  @Email(message = "Email should be valid")
   @Column(nullable = false, unique = true)
   private String email;
 
@@ -50,6 +58,7 @@ public class Professor {
    * The unique institutional identification number for the professor (e.g., employee ID). This
    * field must be unique.
    */
+  @NotBlank(message = "Register ID is required")
   @Column(unique = true)
   private String register;
 

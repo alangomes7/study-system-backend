@@ -1,6 +1,9 @@
 package batistaReviver.studentApi.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,18 +30,24 @@ public class Student {
   private Long id;
 
   /** The full name of the student. This field cannot be null. */
+  @NotBlank(message = "Name is required")
   @Column(nullable = false)
   private String name;
 
   /** The phone number of the student. This field must be unique and cannot be null. */
+  @NotBlank(message = "Phone is required")
+  @Pattern(regexp = "^\\+?[0-9. ()-]{7,25}$", message = "Phone number is invalid")
   @Column(nullable = false, unique = true)
   private String phone;
 
   /** The email address of the student. This field must be unique and cannot be null. */
+  @NotBlank(message = "Email is required")
+  @Email(message = "Email should be valid")
   @Column(nullable = false, unique = true)
   private String email;
 
   /** The unique registration number for the student. */
+  @NotBlank(message = "Register number is required")
   @Column(nullable = false, unique = true)
   private String register;
 

@@ -1,6 +1,5 @@
 package batistaReviver.studentApi.repository;
 
-import batistaReviver.studentApi.model.StudyClass;
 import batistaReviver.studentApi.model.Subscription;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;

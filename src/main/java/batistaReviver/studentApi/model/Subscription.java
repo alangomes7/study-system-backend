@@ -1,6 +1,7 @@
 package batistaReviver.studentApi.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,7 @@ public class Subscription {
    * The student who is subscribed. This establishes a many-to-one relationship with the Student
    * entity.
    */
+  @NotNull(message = "Student is required")
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "student_id", nullable = false)
   private Student student;
@@ -48,6 +50,7 @@ public class Subscription {
    * The specific class to which the student is subscribed. This establishes a many-to-one
    * relationship with the StudyClass entity.
    */
+  @NotNull(message = "Study Class is required")
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "study_class_id", nullable = false)
   private StudyClass studyClass;

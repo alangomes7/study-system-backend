@@ -3,6 +3,7 @@ package batistaReviver.studentApi.controller;
 import batistaReviver.studentApi.dto.StudyClassDto;
 import batistaReviver.studentApi.model.StudyClass;
 import batistaReviver.studentApi.service.StudyClassService;
+import jakarta.validation.Valid;
 import java.util.List; // Import List
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -87,7 +88,7 @@ public class StudyClassController {
    */
   @PostMapping
   public ResponseEntity<StudyClassDto> createStudyClass(
-      @RequestBody CreateStudyClassRequest request) {
+      @Valid @RequestBody CreateStudyClassRequest request) {
     StudyClassDto createdClass =
         studyClassService.createStudyClass(
             request.year(), request.semester(), request.courseId(), request.professorId());

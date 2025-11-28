@@ -2,6 +2,7 @@ package batistaReviver.studentApi.controller;
 
 import batistaReviver.studentApi.model.Course;
 import batistaReviver.studentApi.service.CourseService;
+import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -55,7 +56,7 @@ public class CourseController {
    *     status.
    */
   @PostMapping
-  public ResponseEntity<Course> createCourse(@RequestBody Course course) {
+  public ResponseEntity<Course> createCourse(@Valid @RequestBody Course course) {
     Course newCourse = courseService.createCourse(course);
     return new ResponseEntity<>(newCourse, HttpStatus.CREATED);
   }
@@ -70,7 +71,7 @@ public class CourseController {
    */
   @PutMapping("/{id}")
   public ResponseEntity<Course> updateCourse(
-      @PathVariable Long id, @RequestBody Course courseDetails) {
+      @PathVariable Long id, @Valid @RequestBody Course courseDetails) {
     Course updatedCourse = courseService.updateCourse(id, courseDetails);
     return ResponseEntity.ok(updatedCourse);
   }
