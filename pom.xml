@@ -19,6 +19,12 @@
 	</properties>
 
 	<dependencies>
+		<!-- environment variable -->
+		<dependency>
+			<groupId>me.paulschwarz</groupId>
+			<artifactId>spring-dotenv</artifactId>
+			<version>4.0.0</version>
+		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
@@ -126,7 +132,7 @@
 				<configuration>
 					<java>
 						<googleJavaFormat>
-							<version>1.17.0</version>
+							<version>1.19.2</version>
 						</googleJavaFormat>
 					</java>
 				</configuration>

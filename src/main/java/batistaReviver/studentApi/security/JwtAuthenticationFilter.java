@@ -45,17 +45,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     var authenticationToken =
         new UsernamePasswordAuthenticationToken(
-            userId,
-            null,
-            List.of(new SimpleGrantedAuthority("ROLE_" + role)));
+            userId, null, List.of(new SimpleGrantedAuthority("ROLE_" + role)));
 
     authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-
     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-
     filterChain.doFilter(request, response);
 
-    // Se houver uma linha de código aqui ela será executada após o controller ser executado.
-    // Aqui poderíamos, por exemplo, modificar o objeto response.
+    // If there is a line of code here, it will be executed after the controller is run.
+    // Here we could, for example, modify the response object.
   }
 }

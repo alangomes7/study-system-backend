@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("authentication")
+@RequestMapping("/authentication")
 public class AuthenticationController {
 
   private final AuthenticationManager authenticationManager;
   private final JwtService jwtService;
   private final UserAppRepository userAppRepository;
 
-  @PostMapping("login")
+  @PostMapping("/login")
   public ResponseEntity<TokenResponse> login(
       @Valid @RequestBody UserAppLogin userAppLogin, HttpServletResponse response) {
 
