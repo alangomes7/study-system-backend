@@ -21,7 +21,11 @@ public class UserAppService {
     }
 
     userApp.setPassword(passwordEncoder.encode(userApp.getPassword()));
-    userApp.setRole(Role.USER);
+
+    if (userApp.getRole() == null) {
+      userApp.setRole(Role.USER);
+    }
+
     return userAppRepository.save(userApp);
   }
 

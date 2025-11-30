@@ -3,12 +3,18 @@ package batistaReviver.studentApi;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
+
+import batistaReviver.studentApi.model.UserApp;
+import batistaReviver.studentApi.repository.UserAppRepository;
+import batistaReviver.studentApi.util.Role;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * Main entry point for the Student API application.
@@ -63,5 +69,25 @@ public class RestfullestApplication implements CommandLineRunner {
       logger.warn("Could not determine local IP address: {}", e.getMessage());
       return "localhost";
     }
+  }
+
+  @Bean
+  public CommandLineRunner createAdminUser(UserAppRepository userAppRepository, PasswordEncoder passwordEncoder) {
+    return args -> {
+      // Check if the admin user already exists to avoid duplicates
+      if (userAppRepository.findByEmail("admin@studysystem.com").isEmpty()) {
+
+        // Create a new UserApp instance with ADMIN role
+        UserApp admin = new UserApp(
+                "Admin User",
+                "admin@studysystem.com",
+                passwordEncoder.encode("admin123"), // Password is "admin123"
+                Role.ADMIN
+        );
+
+        userAppRepository.save(admin);
+        System.out.println("✅ ADMIN user created: admin@studysystem.com / admin123");
+      }
+    };
   }
 }
