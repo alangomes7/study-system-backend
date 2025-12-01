@@ -19,6 +19,7 @@ public class EndpointConfig {
   private static final String STUDENTS_PATH = "/students/**";
   private static final String PROFESSORS_PATH = "/professors/**";
   private static final String CLASSES_PATH = "/study-classes/**";
+  private static final String SUBSCRIPTIONS_PATH = "/subscriptions/**";
   private static final String MANAGE_PATH = "/manage/**";
 
   /**
@@ -26,7 +27,7 @@ public class EndpointConfig {
    * (Read/Write for Users, Update/Delete for Admins).
    */
   private static final String[] CORE_RESOURCES = {
-          STUDENTS_PATH, PROFESSORS_PATH, CLASSES_PATH, MANAGE_PATH
+          STUDENTS_PATH, PROFESSORS_PATH, CLASSES_PATH, SUBSCRIPTIONS_PATH, MANAGE_PATH
   };
 
   // ========================================================================
