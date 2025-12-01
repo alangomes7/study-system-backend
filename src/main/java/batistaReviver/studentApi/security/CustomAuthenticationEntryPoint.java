@@ -1,7 +1,7 @@
 package batistaReviver.studentApi.security;
 
 import batistaReviver.studentApi.exception.ErrorResponseApp;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import batistaReviver.studentApi.util.ObjectMapperApp;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -28,12 +28,16 @@ public class CustomAuthenticationEntryPoint implements org.springframework.secur
                 request.getMethod(),
                 request.getRequestURI(),
                 null,
-                authException.getMessage()
+                "Necessário estar autenticado para acessar este recurso." // authException.getMessage()
         );
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        new ObjectMapper().writeValue(response.getOutputStream(), error);
+        try {
+            ObjectMapperApp.write(response, error);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

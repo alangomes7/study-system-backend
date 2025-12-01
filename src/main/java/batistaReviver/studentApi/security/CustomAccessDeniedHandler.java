@@ -1,7 +1,7 @@
 package batistaReviver.studentApi.security;
 
 import batistaReviver.studentApi.exception.ErrorResponseApp;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import batistaReviver.studentApi.util.ObjectMapperApp;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
@@ -29,12 +29,16 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
                 request.getMethod(),
                 request.getRequestURI(),
                 null,
-                accessDeniedException.getMessage()
+                "Você não tem permissão para acessar este recurso." // accessDeniedException.getMessage()
         );
 
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        new ObjectMapper().writeValue(response.getOutputStream(), error);
+        try {
+            ObjectMapperApp.write(response, error);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
