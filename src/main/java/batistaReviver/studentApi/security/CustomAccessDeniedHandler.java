@@ -13,9 +13,26 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+/**
+ * Custom handler for access denied errors (Authorization).
+ * <p>
+ * This class is triggered when an <em>authenticated</em> user attempts to access
+ * a resource they do not have the required role for (resulting in a 403 Forbidden error).
+ */
 @Component
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
+    /**
+     * Handles an access denied failure.
+     * <p>
+     * Writes a JSON {@link ErrorResponseApp} to the response stream indicating
+     * that the user does not have permission.
+     *
+     * @param request               The request that resulted in an AccessDeniedException.
+     * @param response              The response so that the user agent can be advised of the failure.
+     * @param accessDeniedException The exception that caused the invocation.
+     * @throws IOException If an input or output exception occurs.
+     */
     @Override
     public void handle(
             HttpServletRequest request,
