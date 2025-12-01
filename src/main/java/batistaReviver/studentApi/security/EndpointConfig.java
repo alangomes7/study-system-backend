@@ -10,14 +10,17 @@ public class EndpointConfig {
   };
 
   public static final Endpoint[] USER_OR_ADMIN_ENDPOINTS = {
-    new Endpoint(HttpMethod.POST, "/students/**"),
-    new Endpoint(HttpMethod.POST, "/professors/**"),
-    new Endpoint(HttpMethod.DELETE, "/study-classes/**"),
-    new Endpoint(HttpMethod.POST, "/manage/**")
+    new Endpoint(HttpMethod.GET, "/students/**"),
+    new Endpoint(HttpMethod.GET, "/professors/**"),
+    new Endpoint(HttpMethod.GET, "/study-classes/**"),
+    new Endpoint(HttpMethod.GET, "/manage/**")
   };
 
   public static final Endpoint[] ADMIN_ENDPOINTS = {
-    new Endpoint(HttpMethod.PUT, "/manage/**"),
+          new Endpoint(HttpMethod.DELETE, "/students/**"),
+          new Endpoint(HttpMethod.DELETE, "/professors/**"),
+          new Endpoint(HttpMethod.DELETE, "/study-classes/**"),
+          new Endpoint(HttpMethod.DELETE, "/manage/**")
   };
 
   public record Endpoint(HttpMethod method, String pattern) {}

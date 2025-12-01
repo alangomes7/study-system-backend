@@ -41,7 +41,6 @@ public class UserAppController {
    */
   @PostMapping
   public ResponseEntity<UserApp> createUser(@Valid @RequestBody UserApp userApp) {
-    // Note: UserAppService currently overwrites any passed role to Role.USER
     return new ResponseEntity<>(userAppService.createUserApp(userApp), HttpStatus.CREATED);
   }
 }

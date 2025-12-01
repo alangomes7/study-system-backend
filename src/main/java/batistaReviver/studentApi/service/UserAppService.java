@@ -1,16 +1,23 @@
 package batistaReviver.studentApi.service;
 
+import batistaReviver.studentApi.exception.EntityNotFoundException;
 import batistaReviver.studentApi.model.UserApp;
 import batistaReviver.studentApi.repository.UserAppRepository;
 import batistaReviver.studentApi.util.Role;
+
+import java.util.Collections;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
 @Service
-public class UserAppService {
+public class UserAppService implements UserDetailsService {
 
   private final UserAppRepository userAppRepository;
   private final PasswordEncoder passwordEncoder;
@@ -31,5 +38,15 @@ public class UserAppService {
 
   public List<UserApp> fetchAllUserApps() {
     return userAppRepository.findAll();
+  }
+
+  public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+
+    UserApp userApp =
+            userAppRepository
+                    .findByEmail(email)
+                    .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+
+    return new User(userApp.getEmail(), userApp.getPassword(), Collections.emptyList());
   }
 }
