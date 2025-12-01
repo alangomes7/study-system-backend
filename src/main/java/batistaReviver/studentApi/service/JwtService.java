@@ -1,9 +1,11 @@
 package batistaReviver.studentApi.service;
 
+import batistaReviver.studentApi.exception.JwtAuthenticationException;
 import batistaReviver.studentApi.model.UserApp;
 import batistaReviver.studentApi.util.Role;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureException;
 
 import javax.crypto.SecretKey;
 
@@ -43,6 +45,29 @@ public class JwtService {
             .expiration(new Date(now + expirationSeconds * 1000))
             .signWith(secretKey)
             .compact();
+  }
+
+  /**
+   * Validates the token and throws specific exceptions if invalid.
+   * This allows the JwtAuthenticationFilter to return precise error messages.
+   */
+  public void validateOrThrow(String token) {
+    try {
+      Jwts.parser()
+              .verifyWith(secretKey)
+              .build()
+              .parseSignedClaims(token);
+    } catch (ExpiredJwtException e) {
+      throw new JwtAuthenticationException("Token has expired");
+    } catch (SignatureException e) {
+      throw new JwtAuthenticationException("Invalid token signature");
+    } catch (MalformedJwtException e) {
+      throw new JwtAuthenticationException("Malformed JWT token");
+    } catch (UnsupportedJwtException e) {
+      throw new JwtAuthenticationException("Unsupported JWT token");
+    } catch (IllegalArgumentException e) {
+      throw new JwtAuthenticationException("Token is missing or empty");
+    }
   }
 
   public boolean validateToken(String token) {
