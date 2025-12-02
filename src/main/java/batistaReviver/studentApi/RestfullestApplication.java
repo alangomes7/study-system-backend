@@ -81,23 +81,23 @@ public class RestfullestApplication implements CommandLineRunner {
         UserApp admin = new UserApp(
                 "Admin",
                 "admin@studysystem.com",
-                passwordEncoder.encode("admin123"), // Password is "admin123"
+                passwordEncoder.encode("password"), // Password is "password"
                 Role.ADMIN
         );
 
         userAppRepository.save(admin);
-        System.out.println("✅ Login admin created: admin@studysystem.com / admin123");
+        System.out.println("✅ Login admin created: admin@studysystem.com / password");
 
         // Create a new UserApp instance with ADMIN role
         UserApp user = new UserApp(
                 "User",
                 "user@studysystem.com",
-                passwordEncoder.encode("user1234"), // Password is "admin123"
+                passwordEncoder.encode("password"), // Password is "password"
                 Role.USER
         );
 
         userAppRepository.save(user);
-        System.out.println("✅ Login user created: admin@studysystem.com / admin123");
+        System.out.println("✅ Login user created: admin@studysystem.com / password");
       }
     };
   }
