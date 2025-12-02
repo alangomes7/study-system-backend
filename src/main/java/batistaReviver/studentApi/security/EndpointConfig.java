@@ -27,7 +27,14 @@ public class EndpointConfig {
    * (Read/Write for Users, Update/Delete for Admins).
    */
   private static final String[] CORE_RESOURCES = {
-          STUDENTS_PATH, PROFESSORS_PATH, CLASSES_PATH, SUBSCRIPTIONS_PATH, MANAGE_PATH
+          STUDENTS_PATH, PROFESSORS_PATH, CLASSES_PATH, MANAGE_PATH
+  };
+
+  /**
+   * Helper array of paths that are accessible ONLY by Admins.
+   */
+  private static final String[] ADMIN_ONLY_RESOURCES = {
+          SUBSCRIPTIONS_PATH
   };
 
   // ========================================================================
@@ -47,18 +54,17 @@ public class EndpointConfig {
    * Includes Read (GET) and Create (POST) operations.
    */
   public static final Endpoint[] USER_OR_ADMIN_ENDPOINTS = buildEndpoints(
+          CORE_RESOURCES,
           HttpMethod.GET,
           HttpMethod.POST
   );
 
   /**
    * Endpoints accessible ONLY by users with the 'ADMIN' role.
-   * Includes Update (PUT) and Delete (DELETE) operations.
+   * Includes Update (PUT) and Delete (DELETE) operations for Core Resources,
+   * and ALL operations for Admin Only Resources.
    */
-  public static final Endpoint[] ADMIN_ENDPOINTS = buildEndpoints(
-          HttpMethod.PUT,
-          HttpMethod.DELETE
-  );
+  public static final Endpoint[] ADMIN_ENDPOINTS = buildAdminEndpoints();
 
   // ========================================================================
   // HELPER TYPES & METHODS
@@ -72,13 +78,25 @@ public class EndpointConfig {
   /**
    * Helper method to generate endpoints for multiple paths and methods to reduce verbosity.
    */
-  private static Endpoint[] buildEndpoints(HttpMethod... methods) {
+  private static Endpoint[] buildEndpoints(String[] paths, HttpMethod... methods) {
     java.util.List<Endpoint> list = new java.util.ArrayList<>();
-    for (String path : EndpointConfig.CORE_RESOURCES) {
+    for (String path : paths) {
       for (HttpMethod method : methods) {
         list.add(new Endpoint(method, path));
       }
     }
+    return list.toArray(new Endpoint[0]);
+  }
+
+  /**
+   * Helper method to build the Admin endpoint list combining restricted core actions and fully restricted resources.
+   */
+  private static Endpoint[] buildAdminEndpoints() {
+    java.util.List<Endpoint> list = new java.util.ArrayList<>();
+    // Core resources: PUT, DELETE
+    java.util.Collections.addAll(list, buildEndpoints(CORE_RESOURCES, HttpMethod.PUT, HttpMethod.DELETE));
+    // Admin only resources: ALL methods
+    java.util.Collections.addAll(list, buildEndpoints(ADMIN_ONLY_RESOURCES, HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE));
     return list.toArray(new Endpoint[0]);
   }
 }

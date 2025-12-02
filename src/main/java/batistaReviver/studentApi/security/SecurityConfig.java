@@ -1,5 +1,6 @@
 package batistaReviver.studentApi.security;
 
+import batistaReviver.studentApi.dto.RouteRule;
 import batistaReviver.studentApi.service.UserAppService;
 import batistaReviver.studentApi.util.Role;
 import java.util.List;
@@ -57,26 +58,32 @@ public class SecurityConfig {
    */
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
     http
             .csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(authorize -> {
-              // Public Endpoints
-              for (EndpointConfig.Endpoint ep : EndpointConfig.PUBLIC_ENDPOINTS) {
-                authorize.requestMatchers(ep.method(), ep.pattern()).permitAll();
+            .authorizeHttpRequests(auth -> {
+
+              for (RouteRule rule : RouteRegistry.RULES) {
+
+                switch (rule.permission()) {
+                  case PUBLIC -> auth
+                          .requestMatchers(rule.method(), rule.pattern())
+                          .permitAll();
+
+                  case USER -> auth
+                          .requestMatchers(rule.method(), rule.pattern())
+                          .hasAnyRole(Role.USER.name(), Role.ADMIN.name());
+
+                  case ADMIN -> auth
+                          .requestMatchers(rule.method(), rule.pattern())
+                          .hasRole(Role.ADMIN.name());
+                }
               }
-              // User or Admin Endpoints
-              for (EndpointConfig.Endpoint ep : EndpointConfig.USER_OR_ADMIN_ENDPOINTS) {
-                authorize.requestMatchers(ep.method(), ep.pattern())
-                        .hasAnyRole(Role.USER.name(), Role.ADMIN.name());
-              }
-              // Admin Only Endpoints
-              for (EndpointConfig.Endpoint ep : EndpointConfig.ADMIN_ENDPOINTS) {
-                authorize.requestMatchers(ep.method(), ep.pattern()).hasRole(Role.ADMIN.name());
-              }
-              // Default to authenticated for anything else
-              authorize.anyRequest().authenticated();
+
+              // default behavior
+              auth.anyRequest().authenticated();
             })
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .exceptionHandling(ex -> {

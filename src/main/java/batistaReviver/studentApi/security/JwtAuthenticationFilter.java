@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -82,7 +84,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 
       filterChain.doFilter(request, response);
-
+      System.out.println(" - - - - - - - - - - -");
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yy - HH:mm:ss:SSS");
+      String formatted = LocalDateTime.now().format(formatter);
+      System.out.println("Timestamp: " + formatted);
+      System.out.println("User: " + userId);
+      System.out.println("Role: " + role);
+      System.out.println("Authentication: " + authenticationToken.getDetails());
+      System.out.println("SecurityContextHolder: " + SecurityContextHolder.getContext().getAuthentication());
+      System.out.println("Response: " + response.getStatus() + " | " + response.getContentType());
+      System.out.println(" - - - - - - - - - - -");
     } catch (JwtAuthenticationException ex) {
       // Send the error to the AuthenticationEntryPoint
       // Spring Security will call CustomAuthenticationEntryPoint

@@ -9,7 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 
 /**
@@ -31,13 +30,12 @@ public class CustomAuthenticationEntryPoint implements org.springframework.secur
      * @param request       The request that resulted in an AuthenticationException.
      * @param response      The response so that the user agent can begin authentication.
      * @param authException The exception that caused the invocation.
-     * @throws IOException If an input or output exception occurs.
      */
     @Override
     public void commence(
             HttpServletRequest request,
             HttpServletResponse response,
-            AuthenticationException authException) throws IOException {
+            AuthenticationException authException) {
 
         ErrorResponseApp error = new ErrorResponseApp(
                 LocalDateTime.now(),
